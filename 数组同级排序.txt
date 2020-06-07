@@ -1,0 +1,116 @@
+var oldArr = [32,13,54,12,13,54,13,54,13];
+var newArr = oldArr.sort().reverse();
+
+var equal = [];
+var endEqual = [];
+for(var i=0; i<newArr.length-1; i++){
+    if(newArr[i]===newArr[i+1]){
+        if(equal.indexOf(newArr[i]) === -1){
+            equal.push(newArr[i]);
+        }
+    }
+}
+
+for(var i=0; i<equal.length; i++){
+    var obj = {};
+    obj.start = newArr.indexOf(equal[i]);
+    obj.end = newArr.lastIndexOf(equal[i]);
+    obj.score = equal[i];
+    endEqual.push(obj);
+}
+
+var rankList = [];
+var rank = null;
+for(var i=0; i<newArr.length; i++){
+    rank = i+1;
+    if(endEqual.length > 0){
+        var current = endEqual[0];
+        if(current.score === newArr[i]){
+            var length = current.end - current.start + i;
+            for(; i<length; i++){
+                rankList[i] = rank;
+            }
+            endEqual.shift();
+        }
+    }
+
+     rankList[i] = rank;
+}
+
+function getRank(totalScore){
+    var arr = [12,13,14,14,13,23,14];
+    var newArr = arr.sort().reverse();
+
+    var rankList = [];
+    var rank = null;
+    for(var i=0; i<newArr.length; i++){
+     var count = newArr.lastIndexOf(arr[i]) - newArr.indexOf(arr[i]) + i;
+     rank = i+1;
+     if(count > i){
+      while(i<count){
+       var obj = {};
+       obj['rank'] = rank;
+       obj['score'] = newArr[i];
+       rankList.push(obj);
+       i++;
+      }
+     }
+
+       var foo = {};
+       foo['rank'] = rank;
+       foo['score'] = newArr[i];
+       rankList.push(foo);
+    }
+
+    var totalScoreRank = null;
+    rankList.forEach(function(rank){
+        if(rank.score === totalScore){
+            totalScoreRank = rank.rank;
+            return;
+        }
+    });
+
+    return totalScoreRank;
+}
+
+
+var newArr = [54, 54, 54, 32, 13, 13, 13, 13, 12];
+var equal = [];
+var endEqual = [];
+for(var i=0; i<newArr.length-1; i++){
+    if(newArr[i]===newArr[i+1]){
+        if(equal.indexOf(newArr[i]) === -1){
+            equal.push(newArr[i]);
+        }
+    }
+}
+for(var i=0; i<equal.length; i++){
+    var obj = {};
+    obj.start = newArr.indexOf(equal[i]);
+    obj.end = newArr.lastIndexOf(equal[i]);
+    obj.score = equal[i];
+    endEqual.push(obj);
+}
+
+var rankList = [];
+var rank = null;
+var count = 0;
+for(var i=0; i<newArr.length; i++){
+    rank = i+1;
+    if(endEqual.length > count){
+        endEqual.forEach(function(equal){
+            console.log(equal.score);
+            rankList[i] = rank;
+            if(equal.score === newArr[i]){
+                count++;
+                var length = equal.end - equal.start;
+                for(; i<length; i++){
+                    rankList[i] = rank;             
+                }           
+            }
+        });
+        return;
+    }
+    
+    rankList[i] = rank;
+}
